@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGENTIC ROI CORE | OPERADOR ELITE MONETIZA PRO</title>
+    <style>
+        :root {
+            --bg-core: #050505;
+            --bg-panel: #111111;
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --accent-cyan: #00f0ff;
+            --accent-green: #00ff9d;
+            --accent-alert: #ff0055;
+            --border-color: #333;
+            --font-mono: 'Courier New', Courier, monospace;
+            --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-core);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(90deg, #000, #1a1a1a);
+            border-bottom: 1px solid var(--accent-cyan);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: var(--font-mono);
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 1px;
+            background-color: var(--border-color); /* Grid lines */
+        }
+
+        .panel {
+            background-color: var(--bg-panel);
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        h2 {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .highlight-green { color: var(--accent-green); }
+
+        .roi-display {
+            background: rgba(0, 255, 157, 0.05);
+            border: 1px solid var(--accent-green);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roi-display::before {
+            content: "DAR 32X ACTIVE";
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.6rem;
+            color: var(--accent-green);
+            font-family: var(--font-mono);
+            border: 1px solid var(--accent-green);
+            padding: 2px 4px;
+        }
+
+        .roi-value {
+            font-size: 3rem;
+            color: var(--accent-green);
+            font-weight: bold;
+            font-family: var(--font-mono);
+        }
+
+        .enterprise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: var(--bg-panel);
+            border: 1px solid var(--accent-alert);
+            padding: 3rem;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);
+        }
+
+        .modal h3 {
+            color: var(--accent-alert);
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .modal p {
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: var(--accent-alert);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 1px;
+            font-family: var(--font-mono);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .deep-research-blocked {
+            opacity: 0.3;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .deep-research-blocked::after {
+            content: "ACCESS DENIED";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent-alert);
+            font-family: var(--font-mono);
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid var(--accent-alert);
+            padding: 0.5rem 1rem;
+            transform: translate(-50%, -50%) rotate(-15deg);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">Protocolo Sigma Omega Core</div>
+        <div class="status-badge">Modo: Max Performance</div>
+    </header>
+
+    <main>
+        <!-- Control Panel -->
+        <div class="panel">
+            <h2>Parámetros de Operación</h2>
+
+            <div class="input-group">
+                <label>Nivel de Servicio</label>
+                <select id="serviceLevel">
+                    <option value="basic">Básico: Simulación</option>
+                    <option value="enterprise">Enterprise (Deep Research)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Volumen de Tareas (Mensual)</label>
+                <input type="number" id="taskVolume" value="1000">
+            </div>
+
+            <div class="input-group">
+                <label>Horas Manuales por Tarea</label>
+                <input type="number" id="manualHours" value="2.5" step="0.1">
+            </div>
+
+            <div class="input-group">
+                <label>Costo por Hora (USD)</label>
+                <input type="number" id="hourlyCost" value="50">
+            </div>
+
+            <div class="input-group">
+                <label>Costo Gemini (USD)</label>
+                <input type="number" id="geminiCost" value="200">
+            </div>
+
+        </div>
+
+        <!-- Dashboard -->
+        <div class="panel" id="dashboardPanel">
+            <h2>Proyección de Valor Universal</h2>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value highlight-green">+21.25%</div>
+                    <div class="metric-label">Optimización Doc</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">80.0%</div>
+                    <div class="metric-label">Tasa Resolución Soporte</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="manualCostDisplay">$0</div>
+                    <div class="metric-label">Costo Manual Actual</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="efficiencyDisplay">0h</div>
+                    <div class="metric-label">Tiempo Agéntico (32x)</div>
+                </div>
+            </div>
+
+            <div class="roi-display">
+                <div class="metric-label">AHORRO MENSUAL ESTIMADO</div>
+                <div class="roi-value" id="savingsDisplay">$0.00</div>
+            </div>
+
+            <div id="deepResearchSection" style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem;">
+                <h3 style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.9rem; margin-bottom: 1rem;">DEEP RESEARCH AGENT (100+ SOURCES)</h3>
+                <div style="background: #000; padding: 1rem; border: 1px dashed #333; color: #555;">
+                    <p>Accessing global financial databases...</p>
+                    <p>Consolidating multi-currency ledgers...</p>
+                    <p>Detecting arbitrage opportunities...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enterprise Upgrade Overlay -->
+    <div class="enterprise-overlay" id="enterpriseOverlay">
+        <div class="modal">
+            <h3>⚠️ Acceso Restringido</h3>
+            <p>La consolidación financiera y el acceso al <strong>Deep Research Agent</strong> requieren un nivel de servicio superior.</p>
+            <p style="font-size: 0.9rem; color: #999;">Detectada fuga de ROI masiva. Active el protocolo completo para mitigar.</p>
+            <button class="btn" onclick="acknowledgeUpgrade()">Upgrade Required</button>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const inputs = {
+            taskVolume: document.getElementById('taskVolume'),
+            manualHours: document.getElementById('manualHours'),
+            hourlyCost: document.getElementById('hourlyCost'),
+            geminiCost: document.getElementById('geminiCost'),
+            serviceLevel: document.getElementById('serviceLevel')
+        };
+
+        const displays = {
+            manualCost: document.getElementById('manualCostDisplay'),
+            efficiency: document.getElementById('efficiencyDisplay'),
+            savings: document.getElementById('savingsDisplay')
+        };
+
+        const overlay = document.getElementById('enterpriseOverlay');
+        const deepResearchSection = document.getElementById('deepResearchSection');
+
+        // Constants
+        const EFFICIENCY_FACTOR = 32;
+
+        // Logic
+        function calculate() {
+            const volume = parseFloat(inputs.taskVolume.value) || 0;
+            const hours = parseFloat(inputs.manualHours.value) || 0;
+            const rate = parseFloat(inputs.hourlyCost.value) || 0;
+            const geminiCost = parseFloat(inputs.geminiCost.value) || 0;
+
+            const manualCost = volume * hours * rate;
+            const manualTotalHours = volume * hours;
+
+            // Agentic time is derived from the 32x efficiency factor
+            const agenticTime = manualTotalHours / EFFICIENCY_FACTOR;
+
+            // Savings
+            const savings = manualCost - geminiCost;
+
+            // Update UI
+            displays.manualCost.textContent = `$${manualCost.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+            displays.efficiency.textContent = `${agenticTime.toFixed(1)}h`;
+            displays.savings.textContent = `$${savings.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+
+        function handleServiceLevel() {
+            const level = inputs.serviceLevel.value;
+            if (level === 'enterprise') {
+                overlay.style.display = 'flex';
+                deepResearchSection.classList.add('deep-research-blocked');
+            } else {
+                overlay.style.display = 'none';
+                deepResearchSection.classList.remove('deep-research-blocked');
+            }
+        }
+
+        // Global function for the button
+        window.acknowledgeUpgrade = function() {
+            // Reset to basic to dismiss, or could redirect.
+            // For this demo, we just hide the overlay but keep the selection to show "Upgrade Required" persistence logic if desired,
+            // but the prompt says "Show CTA". We'll reset the select to basic to signify "Access Denied" or just hide the overlay.
+            // Let's just hide the overlay but keep the block visible on the section.
+            overlay.style.display = 'none';
+            // Note: In a real app this might redirect to a payment page.
+            // Here we leave the section blocked visually.
+        };
+
+        // Listeners
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', calculate);
+            if (input.tagName === 'SELECT') {
+                input.addEventListener('change', handleServiceLevel);
+            }
+        });
+
+        // Init
+        calculate();
+
+    </script>
+</body>
+</html>
