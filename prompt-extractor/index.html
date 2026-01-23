@@ -168,25 +168,52 @@
                             <span class="group-hover:text-amber-400 transition-colors">📚</span> Few-Shot
                         </button>
                     </div>
+                    <!-- Perplexity Research -->
+                    <button onclick="handlePerplexityResearch()" class="w-full mt-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-1 group" title="Investigar contexto con Perplexity">
+                        <span class="group-hover:text-cyan-400 transition-colors">🌐</span> Investigar (Perplexity)
+                    </button>
                 </div>
             </div>
 
-            <!-- 3. Manual Tools (Collapsed/Smaller) -->
+            <!-- 3. Templates Library -->
+             <div class="space-y-2 pt-4 border-t border-slate-800">
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-400">3. Plantillas</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="insertTemplate('CO-STAR')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold py-1.5 px-2 rounded border border-slate-700">CO-STAR</button>
+                    <button onclick="insertTemplate('ChainOfThought')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold py-1.5 px-2 rounded border border-slate-700">Chain of Thought</button>
+                    <button onclick="insertTemplate('SystemPersona')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold py-1.5 px-2 rounded border border-slate-700">System Persona</button>
+                    <button onclick="insertTemplate('FewShotStruct')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold py-1.5 px-2 rounded border border-slate-700">Few-Shot Struct</button>
+                </div>
+             </div>
+
+            <!-- 4. Manual Tools -->
             <div class="space-y-2 pt-4 border-t border-slate-800">
                 <details class="group">
                     <summary class="list-none flex justify-between items-center cursor-pointer text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-300 transition-colors">
-                        <span>3. Herramientas Manuales</span>
+                        <span>4. Herramientas Manuales</span>
                         <span class="transition group-open:rotate-180">
                             <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                         </span>
                     </summary>
                     <div class="mt-3 space-y-2">
-                        <textarea id="search-prompts" class="w-full h-24 bg-slate-800 border border-slate-700 rounded-lg p-3 text-xs font-mono text-blue-200 focus:ring-1 focus:ring-indigo-500 outline-none resize-none placeholder-slate-600" spellcheck="false" placeholder="Patrones Regex..."></textarea>
+                         <button onclick="handleScanVariables()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg border border-slate-700 transition-colors flex items-center justify-center gap-2">
+                            <span>🆔</span> Escanear Variables
+                        </button>
+                        <div class="h-px bg-slate-700 my-2"></div>
+                        <textarea id="search-prompts" class="w-full h-16 bg-slate-800 border border-slate-700 rounded-lg p-3 text-xs font-mono text-blue-200 focus:ring-1 focus:ring-indigo-500 outline-none resize-none placeholder-slate-600" spellcheck="false" placeholder="Patrones Regex..."></textarea>
                         <button onclick="processContent()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg border border-slate-700 transition-colors">
                             🔍 Buscar (Regex)
                         </button>
                     </div>
                 </details>
+            </div>
+
+            <!-- Settings Button -->
+            <div class="pt-4 mt-auto">
+                <button onclick="openSettingsModal()" class="w-full py-2 bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-white text-xs font-bold rounded-lg border border-slate-800 transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Configuración API
+                </button>
             </div>
         </div>
     </aside>
@@ -279,6 +306,33 @@
         </div>
     </div>
 
+    <!-- Modal de Configuración -->
+    <div id="settings-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeSettingsModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-xl w-full max-w-md flex flex-col transform transition-all scale-100">
+                <div class="p-6 border-b border-gray-100">
+                    <h3 class="font-bold text-lg text-gray-800">Configuración de APIs</h3>
+                    <p class="text-xs text-gray-500 mt-1">Tus claves se guardan localmente en tu navegador.</p>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Google Gemini API Key</label>
+                        <input type="password" id="input-gemini-key" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-indigo-500 transition-colors" placeholder="AIzaSy...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Perplexity API Key</label>
+                        <input type="password" id="input-perplexity-key" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-indigo-500 transition-colors" placeholder="pplx-...">
+                    </div>
+                </div>
+                <div class="p-4 border-t border-gray-100 flex justify-end gap-2 bg-gray-50 rounded-b-xl">
+                    <button onclick="closeSettingsModal()" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg transition-colors">Cancelar</button>
+                    <button onclick="saveSettings()" class="px-4 py-2 text-sm font-bold text-white bg-slate-900 hover:bg-black rounded-lg shadow transition-transform active:scale-95">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-6 right-6 bg-slate-800 text-white px-5 py-3 rounded-lg shadow-xl text-sm font-medium transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 border border-slate-700">
         <span id="toast-icon">✨</span>
@@ -287,11 +341,51 @@
 
     <script>
         // === Configuración API ===
-        let apiKey = localStorage.getItem('gemini_api_key') || "";
+        let apiKeys = {
+            gemini: localStorage.getItem('gemini_api_key') || "",
+            perplexity: localStorage.getItem('perplexity_api_key') || ""
+        };
 
-        // === Configuración de Presets (Legacy) ===
-        const PRESETS = {
-            system: ["System Prompt:", "You are a helpful AI assistant specialized in prompt engineering."],
+        // === Configuración de Presets ===
+        const TEMPLATES = {
+            'CO-STAR': `
+# Context (Contexto)
+[Describe el contexto de la tarea]
+
+# Objective (Objetivo)
+[Define qué quieres lograr]
+
+# Style (Estilo)
+[Define el tono y estilo: Formal, Humorístico, Conciso...]
+
+# Tone (Tono)
+[Define la actitud: Empático, Autoritario...]
+
+# Audience (Audiencia)
+[¿Para quién es esto?]
+
+# Response (Respuesta)
+[Formato de salida: JSON, Markdown, Lista...]
+`,
+            'ChainOfThought': `Piensa paso a paso antes de responder:
+1. Analiza la solicitud del usuario.
+2. Desglosa los componentes clave.
+3. Formula una estrategia.
+4. Genera la respuesta final.`,
+            'SystemPersona': `Actúa como un [ROL EXPERTO], con [AÑOS DE EXPERIENCIA] en [CAMPO].
+Tu tarea es [TAREA ESPECÍFICA].
+Debes priorizar [CALIDAD/VELOCIDAD/PRECISIÓN].
+Restricciones:
+- No inventes datos.
+- Sé breve.`,
+            'FewShotStruct': `Input: [Ejemplo entrada 1]
+Output: [Ejemplo salida 1]
+###
+Input: [Ejemplo entrada 2]
+Output: [Ejemplo salida 2]
+###
+Input: [TU ENTRADA AQUÍ]
+Output:`
         };
 
         // === Estado ===
@@ -326,11 +420,39 @@
                 }
             });
 
-            // Check for API Key
-            if (!apiKey) {
-               setTimeout(promptApiKey, 1000);
+            // Check for API Keys
+            if (!apiKeys.gemini && !apiKeys.perplexity) {
+               setTimeout(() => {
+                   showToast("Configura tus API Keys para empezar", "⚙️");
+                   openSettingsModal();
+               }, 1000);
             }
         });
+
+        // === Settings Logic ===
+        function openSettingsModal() {
+            document.getElementById('input-gemini-key').value = apiKeys.gemini;
+            document.getElementById('input-perplexity-key').value = apiKeys.perplexity;
+            document.getElementById('settings-modal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        function saveSettings() {
+            const geminiKey = document.getElementById('input-gemini-key').value.trim();
+            const perplexityKey = document.getElementById('input-perplexity-key').value.trim();
+
+            apiKeys.gemini = geminiKey;
+            apiKeys.perplexity = perplexityKey;
+
+            localStorage.setItem('gemini_api_key', geminiKey);
+            localStorage.setItem('perplexity_api_key', perplexityKey);
+
+            showToast("Configuración guardada", "💾");
+            closeSettingsModal();
+        }
 
         // === File Handling ===
         async function handleFileUpload(event) {
@@ -473,6 +595,43 @@
         }
 
         // === Manual Tools ===
+        function insertTemplate(templateName) {
+            const template = TEMPLATES[templateName];
+            if (!template) return;
+
+            const editor = document.getElementById('editor-area');
+            // Append at the end (or cursor pos if we implemented that complex logic)
+            // Simpler: Append with newline
+            editor.innerText = editor.innerText + "\n\n" + template;
+            updateStats(editor.innerText);
+            showToast("Plantilla insertada", "📝");
+        }
+
+        function handleScanVariables() {
+             const editor = document.getElementById('editor-area');
+             const text = editor.innerText;
+
+             // Look for {{var}}, [var], <var>
+             const regex = /\{\{([^}]+)\}\}|\[([A-Z0-9_\-\s]+)\]|\<([A-Z0-9_\-\s]+)\>/g;
+             const matches = [...text.matchAll(regex)];
+
+             if (matches.length === 0) {
+                 showToast("No se detectaron variables", "Ø");
+                 return;
+             }
+
+             const vars = matches.map(m => m[0]).filter((v, i, a) => a.indexOf(v) === i); // Unique
+             const listHtml = vars.map(v => `<li class="mb-1"><code class="text-indigo-600 font-bold">${v}</code></li>`).join('');
+
+             openModal("Variables Detectadas", `
+             <p>Se han encontrado las siguientes variables o placeholders en el prompt:</p>
+             <ul class="list-disc pl-5 mt-2 space-y-1">
+                ${listHtml}
+             </ul>
+             <p class="mt-4 text-sm text-gray-500">Asegúrate de definir estos valores antes de enviar el prompt.</p>
+             `);
+        }
+
         function processContent() {
             const regexInput = document.getElementById('search-prompts').value;
             const editor = document.getElementById('editor-area');
@@ -502,12 +661,12 @@
 
         // === AI Logic ===
         async function callGeminiAPI(promptText) {
-            if (!apiKey) {
-                promptApiKey();
-                if (!apiKey) throw new Error("API Key requerida");
+            if (!apiKeys.gemini) {
+                openSettingsModal();
+                throw new Error("Gemini API Key requerida");
             }
 
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKeys.gemini}`;
 
             const payload = {
                 contents: [{
@@ -531,6 +690,58 @@
                  return data.candidates[0].content.parts[0].text;
             }
             return "No response from AI.";
+        }
+
+        async function callPerplexityAPI(promptText) {
+             if (!apiKeys.perplexity) {
+                openSettingsModal();
+                throw new Error("Perplexity API Key requerida");
+            }
+
+            const url = 'https://api.perplexity.ai/chat/completions';
+
+            const payload = {
+                model: 'sonar-medium-online',
+                messages: [
+                    { role: 'system', content: 'You are a helpful research assistant. Be concise and provide sources.' },
+                    { role: 'user', content: promptText }
+                ]
+            };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKeys.perplexity}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(`Error API (${response.status}): ${errText}`);
+            }
+
+            const data = await response.json();
+            if (data.choices && data.choices.length > 0) {
+                 return data.choices[0].message.content;
+            }
+            return "No response from AI.";
+        }
+
+        async function handlePerplexityResearch() {
+            const content = document.getElementById('editor-area').innerText;
+             if (!content.trim()) return showToast("El editor está vacío", "⚠️");
+
+             runAIAction("Investigando en la Web...", async () => {
+                const prompt = `Investiga sobre los temas principales mencionados en el siguiente texto y proporciona contexto enriquecido, hechos verificados o definiciones clave que ayuden a mejorar el prompt.
+
+                Texto:
+                ${content.substring(0, 5000)}`;
+
+                const result = await callPerplexityAPI(prompt);
+                openModal("Contexto Enriquecido (Perplexity)", result);
+            });
         }
 
         async function handleAIExtract() {
@@ -665,14 +876,6 @@
             }, 3000);
         }
 
-        function promptApiKey() {
-            const key = prompt("Por favor ingresa tu Google Gemini API Key para habilitar las funciones de IA:");
-            if (key) {
-                apiKey = key;
-                localStorage.setItem('gemini_api_key', key);
-                showToast("API Key guardada", "🔑");
-            }
-        }
     </script>
 </body>
 </html>
